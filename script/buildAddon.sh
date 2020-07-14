@@ -3,9 +3,8 @@
 commit=2eab0008556a7e46289a9907d03e9b2534376c56
 
 rDIR=$(pwd)
-tmpDir=tmp_pg
+tmpDir=/tmp
 
-mkdir -p $tmpDir
 cd $tmpDir
 
 git clone -b 10-latest --single-branch https://github.com/ethanresnick/libpg_query
@@ -14,7 +13,12 @@ cd libpg_query
 # echo "git checkout to $commit"
 git checkout $commit
 
-make CFLAGS='-mmacosx-version-min=10.7' PG_CFLAGS='-mmacosx-version-min=10.7'
+
+if [ "$(uname)" == "Darwin" ]; then
+	make CFLAGS='-mmacosx-version-min=10.7' PG_CFLAGS='-mmacosx-version-min=10.7'
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+	make CFLAGS='' PG_CFLAGS=''
+fi
 
 if [ $? -ne 0 ]; then
 	echo "ERROR: 'make' command failed";
@@ -49,4 +53,4 @@ fi
 
 cp $(pwd)/pg_query.h $rDIR/libpg_query/include/
 
-rm -rf $rDIR/$tmpDir
+cd $rDIR && rm -rf $wDIR

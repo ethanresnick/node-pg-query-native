@@ -5,6 +5,10 @@
   "homepage": "http://github.com/ethanresnick/node-pg-query-native",
   "main": "index.js",
   "typings": "index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+
   "scripts": {
     "configure": "node-gyp configure",
     "build": "node-gyp configure build",
